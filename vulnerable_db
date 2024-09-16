@@ -1,0 +1,14 @@
+# Run MongoDB locally or connect to MongoDB Atlas
+mongosh
+
+# Create a database and collection
+use vulnerable_db
+db.createCollection("users")
+
+# Insert some test users into the 'users' collection
+db.users.insertMany([
+    { username: "admin", password: "supersecret" },
+    { username: "user1", password: "password1" },
+    { username: "user2", password: "password2" }
+])
+
