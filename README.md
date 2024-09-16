@@ -20,3 +20,30 @@ Start the MongoDB service:
 ```
 sudo systemctl start mongod
 ````
+### Creating the Database and User Collection
+Once MongoDB is running, open the MongoDB shell using mongosh, and set up the database:
+
+Create the database vulnerable_db and switch to it:
+```
+use vulnerable_db
+```
+Create the users collection and insert a few users:
+```
+db.createCollection("users")
+```
+Insert users for testing:
+```
+db.users.insertMany([
+    { username: "admin", password: "supersecret" },
+    { username: "user1", password: "password1" },
+    { username: "user2", password: "password2" }
+])
+```
+Check if users are correctly inserted:
+```
+db.users.find().pretty()
+```
+
+
+
+```
