@@ -21,13 +21,14 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-// NoSQL Injection Vulnerability in the /login route
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        // Intentionally vulnerable query: no input sanitization
-        const user = await User.findOne({ username: username, password: password });
+        // Directly parsing the request body to create the query object - DELIBERATELY UNSAFE
+        const query = { username: username, password: password };
+
+        const user = await User.findOne(query);
 
         if (user) {
             res.status(200).json({ message: "Login successful!" });
@@ -35,9 +36,11 @@ app.post("/login", async (req, res) => {
             res.status(401).json({ message: "Login failed!" });
         }
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: "Server error" });
     }
 });
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
