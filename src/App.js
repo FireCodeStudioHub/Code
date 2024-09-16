@@ -10,14 +10,24 @@ function App() {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:5000/login", {
-                username,
-                password,
-            });
-
+            // Making the API request with Axios to the Flask backend
+            const response = await axios.post(
+                "http://localhost:5000/login",
+                { username, password },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true,  // Optional: For cookies and credentials
+                }
+            );
             setMessage(response.data.message);
         } catch (error) {
-            setMessage("Error logging in");
+            if (error.response) {
+                setMessage(error.response.data.message || "Login failed!");
+            } else {
+                setMessage("Error logging in");
+            }
         }
     };
 
