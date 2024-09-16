@@ -41,6 +41,58 @@ db.users.insertMany([
 ```
 Check if users are correctly inserted:
 ```
+[todo]
+
+```
+
+### Setting Up Flask Backend
+```
+pip install Flask Flask-CORS pymongo
+```
+### Create app.py for the Flask Backend
+```
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from pymongo import MongoClient
+
+app = Flask(__name__)
+
+# Enable CORS to allow requests from React
+CORS(app)
+
+# Connect to MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+db = client.vulnerable_db
+users_collection = db.users
+
+# Vulnerable login endpoint
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+
+    # Vulnerable to NoSQL Injection
+    user = users_collection.find_one({'username': username, 'password': password})
+    
+    if user:
+        return jsonify({'message': 'Login successful!'}), 200
+    else:
+        return jsonify({'message': 'Login failed!'}), 401
+
+# Start Flask server
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
+```
+### Run
+```
+python app.py
+```
+
+
+
+
+
 db.users.find().pretty()
 ```
 
