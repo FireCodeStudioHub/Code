@@ -41,8 +41,7 @@ db.users.insertMany([
 ```
 Check if users are correctly inserted:
 ```
-[todo]
-
+db.users.find().pretty()
 ```
 
 ### Setting Up Flask Backend
@@ -92,10 +91,3 @@ python app.py
 
 
 
-
-db.users.find().pretty()
-```
-
-
-
-```
